@@ -189,7 +189,7 @@ function sync(){
 async function apiErr(r){let m='HTTP '+r.status;try{const j=await r.json();m=(j.error&&(j.error.message||j.error.errors?.[0]?.reason))||m}catch(_){}const e=new Error(m);e.auth=r.status===401;return e}
 async function up(it,i){
   const f=it.file,when=$('#when').value,long=$('#long').value.trim();
-  const meta={snippet:{title:it.title,description:(long?long+'\n\n':'')+'#Shorts',tags:it.tags,categoryId:$('#cat').value,defaultLanguage:'ru'},
+  const meta={snippet:{title:it.title,description:'',tags:it.tags,categoryId:$('#cat').value,defaultLanguage:'ru'},
     status:{privacyStatus:$('#priv').value,selfDeclaredMadeForKids:false,containsSyntheticMedia:false}};
   if(when){meta.status.privacyStatus='private';meta.status.publishAt=new Date(when).toISOString()}
   const r=await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status',{method:'POST',
