@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#120f1a">
-<title>Шортсы пачкой — загрузка на YouTube</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<title>ShortsFlow — загрузка шортсов на YouTube</title>
+<link rel="preconnect" href="https://googleapis.com">
+<link href="https://googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org"></script>
+<script src="https://google.com" async defer></script>
 <style>
 :root{--bg:#120f1a;--surf:#1b1726;--surf2:#241f33;--line:#352d49;--tx:#f4f0fa;--mut:#a79fb8;--red:#ff3d57;--red2:#ff7a45;--ok:#4ade9c;--bad:#ff8593;color-scheme:dark;box-sizing:border-box}
 *,*::before,*::after{box-sizing:inherit}
@@ -28,31 +29,38 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 textarea{min-height:170px;resize:vertical;font-size:14px;line-height:1.45}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .grid .wide{grid-column:1/-1}
-.btn{border:0;border-radius:14px;padding:13px 22px;font:600 16px Onest,sans-serif;color:#fff;background:linear-gradient(135deg,var(--red),var(--red2));cursor:pointer;transition:transform .12s,filter .12s}
-.btn:hover:not(:disabled){filter:brightness(1.08)}.btn:active:not(:disabled){transform:scale(.98)}
+.btn{border:0;border-radius:14px;padding:13px 22px;font:600 16px Onest,sans-serif;color:#fff;background:linear-gradient(135deg,var(--red),var(--red2));cursor:pointer;transition:transform .12s,filter .12s;text-decoration:none;display:inline-block;text-align:center}
+.btn:hover:not(:disabled){filter:brightness(1.08)}
+.btn:active:not(:disabled){transform:scale(.98)}
 .btn:disabled{background:var(--surf2);color:var(--mut);cursor:not-allowed}
 .btn.ghost{background:var(--surf2);border:1px solid var(--line)}
 .btn.big{width:100%;padding:17px;font-size:18px;margin-top:16px}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
 .drop{display:block;border:2px dashed var(--line);border-radius:16px;padding:26px 16px;text-align:center;cursor:pointer;margin-bottom:14px;transition:border-color .15s,background .15s}
 .drop.over,.drop:hover{border-color:var(--red);background:rgba(255,61,87,.06)}
-.drop b{display:block;font-weight:600;margin-bottom:2px}.drop span{color:var(--mut);font-size:14px}
+.drop b{display:block;font-weight:600;margin-bottom:2px}
+.drop span{color:var(--mut);font-size:14px}
 .drop input{position:absolute;opacity:0;width:1px;height:1px}
 .hint{color:var(--mut);font-size:14px;margin:10px 0 0}
-details{margin-top:14px;color:var(--mut);font-size:14px}summary{cursor:pointer;color:var(--tx)}
-details ol{padding-left:20px;margin:10px 0 0}details li{margin-bottom:6px}
 code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
 .row{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:start;padding:14px 0;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
 .num{width:36px;height:36px;border-radius:10px;background:var(--surf2);display:grid;place-items:center;font:500 15px Unbounded,sans-serif}
-.ttl{font-weight:600;overflow-wrap:anywhere}.ttl i{color:var(--bad);font-weight:400}
-.meta{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--mut);font-size:13px;margin-top:4px}.bad{color:var(--bad)}
+.ttl{font-weight:600;overflow-wrap:anywhere}
+.ttl i{color:var(--bad);font-weight:400}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--mut);font-size:13px;margin-top:4px}
+.bad{color:var(--bad)}
 .bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:10px}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--red2));transition:width .2s}
 .row.done .bar i{background:var(--ok);width:100%!important}
-.st{font-size:14px;color:var(--mut);text-align:right;min-width:120px}.row.done .st{color:var(--ok)}.row.err .st{color:var(--bad)}
+.st{font-size:14px;color:var(--mut);text-align:right;min-width:120px}
+.row.done .st{color:var(--ok)}
+.row.err .st{color:var(--bad)}
 .empty{color:var(--mut);text-align:center;padding:18px 0}
 .note{display:none;margin:0 0 16px;padding:12px 16px;border-radius:12px;background:rgba(255,133,147,.1);border:1px solid rgba(255,133,147,.4);color:var(--bad)}
 .note.on{display:block}
+#tg_bridge{display:none;border-color:rgba(74,222,156,.45);background:linear-gradient(180deg,rgba(74,222,156,.12),var(--surf) 70%);text-align:center}
+#tg_bridge.on{display:block}
 #done{display:none;text-align:center;border-color:rgba(74,222,156,.45);background:linear-gradient(180deg,rgba(74,222,156,.1),var(--surf) 60%)}
 #done.on{display:block;animation:pop .5s cubic-bezier(.2,1.2,.4,1)}
 @keyframes pop{from{transform:scale(.96);opacity:0}}
@@ -61,38 +69,36 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
 #done .links{text-align:left;margin:18px 0 0;display:grid;gap:8px}
 #done .links a{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:12px;background:var(--surf2);color:var(--tx);text-decoration:none;font-size:14px}
 #done .links a:hover{background:var(--line)}
-@media(max-width:600px){main{padding-top:26px}.grid{grid-template-columns:1fr}.row{grid-template-columns:36px 1fr}.st{grid-column:2;text-align:left}.card{padding:18px}}
+@media(max-width:600px){main{padding-top:20px}.grid{grid-template-columns:1fr}.row{grid-template-columns:36px 1fr}.st{grid-column:2;text-align:left}.card{padding:18px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <main>
-<h1>Шортсы пачкой, за один заход</h1>
-<p class="lead">Бросьте видео и текст от ИИ: приложение подставит каждому шортсу своё название и теги, добавит ссылку на длинное видео и загрузит всё на ваш канал.</p>
+<h1>ShortsFlow</h1>
+<p class="lead">Бросьте видео и текст от ИИ: приложение подставит каждому шортсу своё название и теги (без описания) и загрузит всё на ваш канал.</p>
+
+<section class="card" id="tg_bridge">
+  <h2>Авторизация пройдена!</h2>
+  <p class="hint" style="margin-bottom:16px">Нажмите кнопку ниже, чтобы вернуться в Telegram и автоматически подключить аккаунт.</p>
+  <a class="btn big" id="back_to_tg" href="#">Вернуться в ShortsFlow (Telegram)</a>
+</section>
 
 <div class="note" id="note" role="alert"></div>
 
 <section class="card">
   <div class="hd"><span class="badge">1</span><h2>Подключение к YouTube</h2><span class="chip" id="chip">Не подключено</span></div>
   <label for="cid">Client ID из Google Cloud</label>
-  <input id="cid" placeholder="123456-abc.apps.googleusercontent.com" autocomplete="off" spellcheck="false">
-  <p class="hint"><button class="btn" id="conn" style="margin-top:6px">Подключить YouTube</button></p>
-  <details><summary>Где взять Client ID (один раз, ~10 минут)</summary>
-    <ol>
-      <li>Откройте <code>console.cloud.google.com</code>, создайте проект и включите «YouTube Data API v3».</li>
-      <li>«Экран согласия OAuth»: тип «Внешний», добавьте свою почту в «Тестовые пользователи».</li>
-      <li>«Учётные данные» → «Создать» → «Идентификатор клиента OAuth» → «Веб-приложение».</li>
-      <li>В «Разрешённые источники JavaScript» впишите адрес, где открыта эта страница (например <code>https://ваш-логин.github.io</code> или <code>http://localhost:8080</code>). Файл, открытый двойным кликом (file://), не подойдёт.</li>
-      <li>Скопируйте Client ID сюда. При входе Google скажет «приложение не проверено»: нажмите «Дополнительно» → «Перейти». Это ваше личное приложение.</li>
-    </ol>
-  </details>
+  <input id="cid" placeholder="://googleusercontent.com" autocomplete="off" spellcheck="false">
+  <div class="btn-row">
+    <button class="btn" id="conn">Подключить YouTube</button>
+  </div>
+  <p class="hint">Внутри Telegram вход автоматически откроется через браузер телефона, после чего вернёт вас обратно.</p>
 </section>
 
 <section class="card">
   <div class="hd"><span class="badge">2</span><h2>Параметры публикации</h2></div>
   <div class="grid">
-    <div class="wide"><label for="long">Ссылка на длинное видео (попадёт в описание каждого шортса)</label>
-      <input id="long" type="url" placeholder="https://youtu.be/…" autocomplete="off"></div>
     <div><label for="priv">Доступ</label>
       <select id="priv"><option value="unlisted">По ссылке</option><option value="public">Открытый</option><option value="private">Ограниченный</option></select></div>
     <div><label for="cat">Категория</label>
@@ -100,7 +106,7 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
     <div class="wide"><label for="when">Запланировать публикацию (пусто — сразу)</label>
       <input id="when" type="datetime-local"></div>
   </div>
-  <p class="hint">Для каждого шортса отмечается «Нет» в вопросе про ИИ-контент и «Нет» в «Для детей». Если нужно иначе — скажите, поменяю.</p>
+  <p class="hint">Описание каждого ролика остаётся пустым. Отмечается «Нет» в вопросе про ИИ-контент и «Нет» в «Для детей».</p>
 </section>
 
 <section class="card">
@@ -108,7 +114,11 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
   <label class="drop" id="drop"><input type="file" id="files" accept="video/*" multiple>
     <b>Перетащите шортсы сюда или нажмите, чтобы выбрать</b><span id="fcount">Файлы должны называться так же, как в тексте: 1.mp4, 2.mp4…</span></label>
   <label for="txt">Текст с названиями и тегами</label>
-  <textarea id="txt" placeholder="Шортс 1 (1.mp4)&#10;Название (≤100 симв. с хэштегами):&#10;…&#10;Теги (одной строкой):&#10;…"></textarea>
+  <textarea id="txt" placeholder="Шортс 1 (1.mp4)
+Название (≤100 симв. с хэштегами):
+…
+Теги (одной строкой):
+…"></textarea>
 </section>
 
 <section class="card">
@@ -122,104 +132,21 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
   <div class="tick">✓</div>
   <h2>Работа закончена</h2>
   <p class="hint" id="dsum"></p>
-  <p class="hint">YouTube API не умеет ставить «Связанное видео». Ссылка на длинное видео уже в описании, а привязку в плеере сделайте по ссылкам ниже: открыть, «Связанное видео» → выбрать → «Сохранить».</p>
+  <p class="hint">Привяжите «Похожее видео» вручную по ссылкам ниже: открыть, «Дополнения» → «Похожее видео» → выбрать → «Сохранить».</p>
   <div class="links" id="links"></div>
 </section>
 </main>
 
 <script>
-const $=s=>document.querySelector(s),LS=localStorage;
-const S={files:[],items:[],token:'',busy:false};
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const mb=n=>(n/1048576).toFixed(1)+' МБ';
-const note=m=>{const n=$('#note');n.textContent=m;n.classList.toggle('on',!!m)};
-['cid','long','priv','cat','when','txt'].forEach(k=>{const e=$('#'+k);try{const v=LS.getItem('su_'+k);if(v!==null)e.value=v}catch(_){}
-  e.addEventListener('input',()=>{try{LS.setItem('su_'+k,e.value)}catch(_){}if(k==='txt')build()})});
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) {
+  tg.ready();
+  tg.expand();
+}
 
-$('#conn').onclick=()=>{
-  note('');const id=$('#cid').value.trim();
-  if(!id)return note('Вставьте Client ID — как его получить, написано под полем.');
-  if(!window.google||!google.accounts)return note('Не загрузился скрипт Google. Проверьте интернет и обновите страницу.');
-  google.accounts.oauth2.initTokenClient({client_id:id,scope:'https://www.googleapis.com/auth/youtube.upload',
-    callback:r=>{if(r.error)return note('Google не пустил: '+r.error+'. Проверьте Client ID и «Разрешённые источники JavaScript».');
-      S.token=r.access_token;$('#chip').textContent='Подключено';$('#chip').className='chip ok';sync()}}).requestAccessToken();
-};
+const $ = s => document.querySelector(s), LS = localStorage;
+const S = { files: [], items: [], token: '', busy: false };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const mb = n => (n / 1048576).toFixed(1) + ' МБ';
+const note = m => { const n = $('#note'); n.textContent = m; n.classList.toggle('on', !!m); };
 
-const add=fl=>{for(const f of fl)if((/^video\//.test(f.type)||/\.(mp4|mov|webm|mkv)$/i.test(f.name))&&!S.files.some(x=>x.name===f.name&&x.size===f.size))S.files.push(f);build()};
-$('#files').onchange=e=>{add(e.target.files);e.target.value=''};
-const dz=$('#drop');
-['dragenter','dragover'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.add('over')}));
-['dragleave','drop'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.remove('over')}));
-dz.addEventListener('drop',e=>add(e.dataTransfer.files));
-
-function parse(t){
-  return t.split(/(?=Шортс\s*\d+\s*\()/i).map(b=>{
-    const h=b.match(/^Шортс\s*(\d+)\s*\(([^)]*)\)/i);if(!h)return null;
-    const tm=b.match(/(?:^|\s)Название\s*(?:\([^)]*\))?\s*:\s*([\s\S]*?)\s*(?=\(~?\s*\d+\s*\/\s*\d+\s*\)|\s+Теги\s*[(:])/i);
-    const gm=b.match(/(?:^|\s)Теги\s*(?:\([^)]*\))?\s*:\s*([\s\S]*?)\s*(?=\(~?\s*\d+\s*\/\s*\d+\s*симв|$)/i);
-    const title=(tm?tm[1]:'').replace(/\s+/g,' ').trim();
-    const all=[...new Set((gm?gm[1]:'').replace(/[\s)]+$/,'').split(/\s*,\s*/).map(x=>x.trim()).filter(Boolean))];
-    let len=0;const keep=[];
-    for(const g of all){const l=g.length+(/\s/.test(g)?2:0)+(keep.length?1:0);if(len+l>500)break;len+=l;keep.push(g)}
-    return{n:+h[1],fname:h[2].trim(),title,tags:keep,cut:all.length-keep.length,tlen:len};
-  }).filter(Boolean);
-}
-function build(){
-  if(S.busy)return;
-  S.items=parse($('#txt').value).map(it=>{
-    const f=S.files.find(f=>f.name.toLowerCase()===it.fname.toLowerCase())||S.files.find(f=>new RegExp('^0*'+it.n+'(\\D|$)').test(f.name));
-    return{...it,file:f,state:f?'ready':'nofile',p:0};
-  });
-  $('#fcount').textContent=S.files.length?'Выбрано файлов: '+S.files.length+'. Можно добавить ещё.':'Файлы должны называться так же, как в тексте: 1.mp4, 2.mp4…';
-  render();
-}
-const label=it=>({ready:'Готов к загрузке',nofile:'Нет файла',up:Math.round(it.p*100)+'%',done:'Загружено ✓',err:it.msg||'Ошибка'}[it.state]);
-function render(){
-  $('#list').innerHTML=S.items.length?S.items.map((it,i)=>`<div class="row" id="r${i}"><b class="num">${it.n}</b><div><div class="ttl">${it.title?esc(it.title):'<i>Название не найдено в тексте</i>'}</div><div class="meta"><span class="${it.title.length>100?'bad':''}">название ${it.title.length}/100</span><span>теги ${it.tlen}/500${it.cut?' (лишних убрано: '+it.cut+')':''}</span><span class="${it.file?'':'bad'}">${it.file?esc(it.file.name)+' · '+mb(it.file.size):'нет файла '+esc(it.fname)}</span></div><div class="bar"><i id="p${i}"></i></div></div><div class="st" id="s${i}">${label(it)}</div></div>`).join(''):'<div class="empty">Добавьте видео и вставьте текст — здесь появится список.</div>';
-  sync();
-}
-function st(i){const it=S.items[i],r=$('#r'+i);if(!r)return;r.className='row '+(it.state==='done'?'done':it.state==='err'?'err':'');$('#s'+i).textContent=label(it);$('#p'+i).style.width=Math.round(it.p*100)+'%'}
-function sync(){
-  const ok=S.items.filter(i=>i.file&&i.state!=='done').length,n=S.items.length,used=new Set(S.items.map(i=>i.file&&i.file.name)),extra=S.files.filter(f=>!used.has(f.name)).length;
-  $('#sum').textContent=n?'Шортсов: '+n+(extra?' · лишних файлов: '+extra:''):'Пока пусто';
-  $('#go').disabled=S.busy||!S.token||!ok;
-  $('#go').textContent=S.busy?'Загружаю…':S.items.some(i=>i.state==='err'||i.state==='done')&&ok?'Продолжить загрузку':'Загрузить на YouTube';
-  $('#gohint').textContent=!S.token?'Сначала подключите YouTube (шаг 1).':!n?'Вставьте текст от ИИ (шаг 3).':!ok?'Нечего загружать: добавьте недостающие файлы.':'Будет загружено: '+ok+'. Не закрывайте вкладку, пока идёт загрузка.';
-}
-async function apiErr(r){let m='HTTP '+r.status;try{const j=await r.json();m=(j.error&&(j.error.message||j.error.errors?.[0]?.reason))||m}catch(_){}const e=new Error(m);e.auth=r.status===401;return e}
-async function up(it,i){
-  const f=it.file,when=$('#when').value,long=$('#long').value.trim();
-  const meta={snippet:{title:it.title,description:'',tags:it.tags,categoryId:$('#cat').value,defaultLanguage:'ru'},
-    status:{privacyStatus:$('#priv').value,selfDeclaredMadeForKids:false,containsSyntheticMedia:false}};
-  if(when){meta.status.privacyStatus='private';meta.status.publishAt=new Date(when).toISOString()}
-  const r=await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status',{method:'POST',
-    headers:{Authorization:'Bearer '+S.token,'Content-Type':'application/json; charset=UTF-8','X-Upload-Content-Length':f.size,'X-Upload-Content-Type':f.type||'video/mp4'},body:JSON.stringify(meta)});
-  if(!r.ok)throw await apiErr(r);
-  const loc=r.headers.get('Location');if(!loc)throw new Error('YouTube не вернул адрес загрузки');
-  return new Promise((res,rej)=>{const x=new XMLHttpRequest();x.open('PUT',loc);x.setRequestHeader('Authorization','Bearer '+S.token);
-    x.upload.onprogress=e=>{if(e.lengthComputable){it.p=e.loaded/e.total;st(i)}};
-    x.onload=()=>{if(x.status<300){try{res(JSON.parse(x.responseText))}catch(e){rej(e)}}else{const e=new Error('Ошибка '+x.status);e.auth=x.status===401;rej(e)}};
-    x.onerror=()=>rej(new Error('Обрыв сети'));x.send(f)});
-}
-$('#go').onclick=async()=>{
-  note('');$('#done').classList.remove('on');S.busy=true;sync();
-  for(let i=0;i<S.items.length;i++){const it=S.items[i];if(!it.file||it.state==='done')continue;
-    it.state='up';it.p=0;st(i);
-    try{const v=await up(it,i);it.id=v.id;it.state='done';it.p=1}
-    catch(e){it.state='err';it.msg=e.message;st(i);if(e.auth){note('Сессия истекла. Нажмите «Подключить YouTube» и затем «Продолжить загрузку».');S.token='';$('#chip').textContent='Не подключено';$('#chip').className='chip';break}}
-    st(i)}
-  S.busy=false;sync();finish();
-};
-function finish(){
-  const d=S.items.filter(i=>i.state==='done'),bad=S.items.filter(i=>i.state==='err');
-  if(!d.length)return;
-  if(bad.length)return note('Загружено '+d.length+', с ошибкой '+bad.length+'. Исправьте причину (она написана справа) и нажмите «Продолжить загрузку».');
-  document.title='✓ Работа закончена';
-  $('#dsum').textContent='Загружено шортсов: '+d.length+(S.items.some(i=>!i.file)?'. Без файла остались: '+S.items.filter(i=>!i.file).map(i=>i.n).join(', ')+'.':'.');
-  $('#links').innerHTML=d.map(i=>`<a href="https://studio.youtube.com/video/${i.id}/edit" target="_blank" rel="noopener"><span>Шортс ${i.n}: ${esc(i.title.slice(0,46))}${i.title.length>46?'…':''}</span><span>открыть в Studio</span></a>`).join('');
-  $('#done').classList.add('on');$('#done').scrollIntoView({behavior:'smooth',block:'center'});
-}
-build();
-</script>
-</body>
-</html>
